@@ -57,14 +57,15 @@
 
                             </li>
                             <li>
-                                <a href="#">
+                                <router-link to="/admin/order">
                                     <i class="far fa-gem"></i>
                                     <span class="menu-text">Orders</span>
-                                </a>
+                                </router-link>
 
                             </li>
                             <li>
-                                <a href="#">
+                                <a href="#" @click="logout()">
+                                    <i class="fas fa-sign-out-alt"></i>
                                     <span class="menu-text">Logout</span>
                                 </a>
 
@@ -88,11 +89,23 @@
 <script>
     // @ is an alias to /src
     import HelloWorld from "@/components/HelloWorld.vue";
+    import {fb} from "../firebase"
 
     export default {
         name: "admin",
         components: {
             HelloWorld
+        },
+        methods:{
+            logout(){
+                fb.auth().signOut()
+                .then((user)=>{
+                    this.$router.replace('/');
+                })
+                .catch((err)=>{
+                    console.log(err);
+                })
+            }
         }
     };
 </script>

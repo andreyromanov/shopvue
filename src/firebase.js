@@ -9,4 +9,4 @@
     storageBucket: "vue-shop-2d38f.appspot.com",
     messagingSenderId: "803356185095"
   };
-  firebase.initializeApp(config);
+  export const fb = firebase.initializeApp(config);
