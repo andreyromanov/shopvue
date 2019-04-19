@@ -38,7 +38,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <button class="btn btn-primary">Login</button>
+                                    <button class="btn btn-primary" @click="login()">Login</button>
                                 </div>
 
                             </div>
@@ -82,7 +82,9 @@
 </template>
 
 <script>
-    import {fb} from '../firebase';
+    import {
+        fb
+    } from '../firebase';
 
     export default {
         name: "Login",
@@ -97,10 +99,28 @@
             }
         },
         methods: {
-            register() {
-                fb.auth().createUserAndRetrieveDataWithEmailAndPassword(this.email, this.password)
+            login() {
+                fb.auth().signInWithEmailAndPassword(this.email, this.password)
                     .then((user)=>{
                         $('#login').modal('hide');
+                        this.$router.replace('admin')
+                    })
+                    .catch(function (error) {
+                        // Handle Errors here.
+                        var errorCode = error.code;
+                        var errorMessage = error.message;
+                        if (errorCode === 'auth/wrong-password') {
+                            alert('Wrong password.');
+                        } else {
+                            alert(errorMessage);
+                        }
+                        console.log(error);
+                    });
+            },
+            register() {
+                fb.auth().createUserAndRetrieveDataWithEmailAndPassword(this.email, this.password)
+                    .then((user) => {
+                        
                         this.$router.replace('admin');
                     })
                     .catch(function (error) {
