@@ -1,36 +1,78 @@
 <template>
   <div class="products">
-    
- <div class="container text-center">
-     <h3>Products Page!!!</h3>
- </div>
-    
+
+    <div class="container text-center">
+      <h3>Products Page!!!</h3>
+
+      <div class="form-group">
+        <input type="text" class="form-control" placeholder="name" v-model="product.name">
+      </div>
+      <div class="form-group">
+        <input type="text" class="form-control" placeholder="price" v-model="product.price">
+      </div>
+      <div class="form-group">
+        <button @click="saveData" class="btn btn-primary">Save</button>
+      </div>
+    </div>
+
   </div>
 </template>
 
 <script>
-export default {
-  name: "Product",
-  props: {
-    msg: String
-  }
-};
+  import {
+    fb,
+    db
+  } from '../firebase';
+  export default {
+    name: "Product",
+    props: {
+      msg: String
+    },
+
+    data() {
+      return {
+        product: {
+          name: null,
+          price: null
+        }
+
+      }
+    },
+    methods: {
+      saveData() {
+        db.collection("products").add(this.product)
+          .then((docRef) => {
+            console.log("Document written with ID: ", docRef.id);
+            this.reset();
+          })
+          .catch(function (error) {
+            console.error("Error adding document: ", error);
+          });
+      },
+      reset(){
+        Object.assign(this.$data, this.$options.data.apply(this));
+      }
+    }
+  };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
+  h3 {
+    margin: 40px 0 0;
+  }
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  li {
+    display: inline-block;
+    margin: 0 10px;
+  }
+
+  a {
+    color: #42b983;
+  }
 </style>
