@@ -13,6 +13,22 @@
       <div class="form-group">
         <button @click="saveData" class="btn btn-primary">Save</button>
       </div>
+
+      <h3>Products</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="product in products" v-bind:key="product">
+            <td>{{ product.name }}</td>
+            <td>{{ product.price }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
   </div>
@@ -31,6 +47,7 @@
 
     data() {
       return {
+        products: [],
         product: {
           name: null,
           price: null
@@ -39,19 +56,29 @@
       }
     },
     methods: {
+      readData() {
+        db.collection("products").get().then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            this.products.push(doc.data());
+          })
+        });
+      },
       saveData() {
         db.collection("products").add(this.product)
           .then((docRef) => {
             console.log("Document written with ID: ", docRef.id);
-            this.reset();
+            this.readData();
           })
           .catch(function (error) {
             console.error("Error adding document: ", error);
           });
       },
-      reset(){
+      reset() {
         Object.assign(this.$data, this.$options.data.apply(this));
       }
+    },
+    created() {
+      this.readData();
     }
   };
 </script>
