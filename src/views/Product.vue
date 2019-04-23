@@ -2,20 +2,20 @@
   <div class="products">
 
     <div class="container text-center">
-      <h3>Products Page!!!</h3>
+      <h3 class="mb-4">Products Page!!!</h3>
 
       <div class="form-group">
-        <input type="text" class="form-control" placeholder="name" v-model="product.name">
+        <input type="text" class="form-control" placeholder="Product name..." v-model="product.name">
       </div>
       <div class="form-group">
-        <input type="text" class="form-control" placeholder="price" v-model="product.price">
+        <input type="text" class="form-control" placeholder="Product price..." v-model="product.price">
       </div>
       <div class="form-group">
-        <button @click="saveData" class="btn btn-primary">Save</button>
+        <button @click="saveData" class="btn btn-primary btn-lg">Save</button>
       </div>
-
-      <h3>Products</h3>
-      <table>
+      <hr>
+      <h3 class="mb-4">Products</h3>
+      <table class="table table-striped mb-5">
         <thead>
           <tr>
             <th>Name</th>
