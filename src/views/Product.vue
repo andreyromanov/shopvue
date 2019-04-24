@@ -20,12 +20,17 @@
           <tr>
             <th>Name</th>
             <th>Price</th>
+            <th>Modify</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="product in products" v-bind:key="product">
-            <td>{{ product.name }}</td>
-            <td>{{ product.price }}</td>
+            <td>{{ product.data().name }}</td>
+            <td>{{ product.data().price }}</td>
+            <td>
+              <button class="btn btn-primary">Edit</button>
+              <button @click="deleteProduct(product.id)" class="btn btn-danger ml-3">Delete</button>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -56,10 +61,19 @@
       }
     },
     methods: {
+      deleteProduct(doc) {
+        if (confirm('Are you sure?')) {
+          db.collection("products").doc(doc).delete().then(() => {
+           console.log("Deleted!!!");
+          });
+        } else {
+
+        }
+      },
       readData() {
         db.collection("products").get().then((querySnapshot) => {
           querySnapshot.forEach((doc) => {
-            this.products.push(doc.data());
+            this.products.push(doc);
           })
         });
       },
