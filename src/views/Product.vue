@@ -28,13 +28,44 @@
             <td>{{ product.data().name }}</td>
             <td>{{ product.data().price }}</td>
             <td>
-              <button class="btn btn-primary">Edit</button>
+              <button @click="editProduct(product)" class="btn btn-primary">Edit</button>
               <button @click="deleteProduct(product.id)" class="btn btn-danger ml-3">Delete</button>
             </td>
           </tr>
         </tbody>
       </table>
+
     </div>
+
+    <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Edit Product</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="Product name..." v-model="product.name">
+            </div>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="Product price..." v-model="product.price">
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button @click="updateProduct()" type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
 
   </div>
 </template>
@@ -56,15 +87,32 @@
         product: {
           name: null,
           price: null
-        }
+        },
+        activeItem: null
 
       }
     },
     methods: {
+      updateProduct() {
+        db.collection("products").doc(this.activeItem).update(this.product)
+          .then(function () {
+            $('#edit').modal('hide');
+            console.log("Document successfully updated!");
+          })
+          .catch(function (error) {
+            // The document probably doesn't exist.
+            console.error("Error updating document: ", error);
+          });
+      },
+      editProduct(product) {
+        $('#edit').modal('show');
+        this.product = product.data();
+        this.activeItem = product.id;
+      },
       deleteProduct(doc) {
         if (confirm('Are you sure?')) {
           db.collection("products").doc(doc).delete().then(() => {
-           console.log("Deleted!!!");
+            console.log("Deleted!!!");
           });
         } else {
 
