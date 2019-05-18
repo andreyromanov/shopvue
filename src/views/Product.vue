@@ -3,18 +3,8 @@
 
     <div class="container text-center">
       <h3 class="mb-4">Products Page!!!</h3>
+      <button @click="AddNew" class="btn btn-primary mb-4">Add product</button>
 
-      <div class="form-group">
-        <input type="text" class="form-control" placeholder="Product name..." v-model="product.name">
-      </div>
-      <div class="form-group">
-        <input type="text" class="form-control" placeholder="Product price..." v-model="product.price">
-      </div>
-      <div class="form-group">
-        <button @click="saveData" class="btn btn-primary btn-lg">Save</button>
-      </div>
-      <hr>
-      <h3 class="mb-4">Products</h3>
       <table class="table table-striped mb-5">
         <thead>
           <tr>
@@ -37,7 +27,7 @@
 
     </div>
 
-    <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    <div class="modal fade" id="product" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
       aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -93,6 +83,10 @@
       }
     },
     methods: {
+      AddNew(){
+         $('#product').modal('show');
+      },
+
       updateProduct() {
         db.collection("products").doc(this.activeItem).update(this.product)
           .then(function () {
