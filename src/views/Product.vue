@@ -14,14 +14,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="product in products" v-bind:key="product">
-            <td>{{ product.data().name }}</td>
-            <td>{{ product.data().price }}</td>
-            <td>
-              <button @click="editProduct(product)" class="btn btn-primary">Edit</button>
-              <button @click="deleteProduct(product.id)" class="btn btn-danger ml-3">Delete</button>
-            </td>
-          </tr>
+
         </tbody>
       </table>
 
@@ -45,11 +38,20 @@
             <div class="form-group">
               <input type="text" class="form-control" placeholder="Product price..." v-model="product.price">
             </div>
+            <div class="form-group">
+              <textarea class="form-control" name="" id="" cols="30" rows="10" v-model="product.description" placeholder="Product description..."></textarea>
+            </div>
+             <div class="form-group">
+              <input type="text" class="form-control" placeholder="Product tags..." v-model="product.tag">
+            </div>
+             <div class="form-group">
+              <input type="file" class="form-control" placeholder="Product images...">
+            </div>
 
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button @click="updateProduct()" type="button" class="btn btn-primary">Save changes</button>
+            <button @click="addProduct()" type="button" class="btn btn-primary">Save changes</button>
           </div>
         </div>
       </div>
@@ -65,6 +67,7 @@
     fb,
     db
   } from '../firebase';
+import { firestore } from 'firebase';
   export default {
     name: "Product",
     props: {
@@ -76,65 +79,45 @@
         products: [],
         product: {
           name: null,
-          price: null
+          description: null,
+          price: null,
+          tag: null,
+          image: null
         },
         activeItem: null
 
       }
     },
+
+    firestore(){
+      return{
+        products: db.collection('products'),
+      }
+    },
     methods: {
-      AddNew(){
-         $('#product').modal('show');
+      AddNew() {
+        $('#product').modal('show');
       },
 
       updateProduct() {
-        db.collection("products").doc(this.activeItem).update(this.product)
-          .then(function () {
-            $('#edit').modal('hide');
-            console.log("Document successfully updated!");
-          })
-          .catch(function (error) {
-            // The document probably doesn't exist.
-            console.error("Error updating document: ", error);
-          });
+  
       },
       editProduct(product) {
-        $('#edit').modal('show');
-        this.product = product.data();
-        this.activeItem = product.id;
+  
       },
       deleteProduct(doc) {
-        if (confirm('Are you sure?')) {
-          db.collection("products").doc(doc).delete().then(() => {
-            console.log("Deleted!!!");
-          });
-        } else {
-
-        }
+  
       },
       readData() {
-        db.collection("products").get().then((querySnapshot) => {
-          querySnapshot.forEach((doc) => {
-            this.products.push(doc);
-          })
-        });
+    
       },
-      saveData() {
-        db.collection("products").add(this.product)
-          .then((docRef) => {
-            console.log("Document written with ID: ", docRef.id);
-            this.readData();
-          })
-          .catch(function (error) {
-            console.error("Error adding document: ", error);
-          });
+      addProduct() {
+        this.$firestore.products.add(this.product)
       },
-      reset() {
-        Object.assign(this.$data, this.$options.data.apply(this));
-      }
+     
     },
     created() {
-      this.readData();
+   
     }
   };
 </script>

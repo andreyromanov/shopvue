@@ -7,6 +7,9 @@ window.$ = window.jQuery = jQuery;
 import 'popper.js';
 import './assets/app.scss'
 import {fb} from './firebase';
+import VueFirestore from 'vue-firestore'
+
+Vue.use(VueFirestore);
 
 Vue.config.productionTip = false;
 
