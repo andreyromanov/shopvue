@@ -14,7 +14,11 @@
           </tr>
         </thead>
         <tbody>
-
+          <tr v-for="product in products" v-bind:key="product">
+            <td>
+              {{product.name}}
+            </td>
+          </tr>
         </tbody>
       </table>
 
@@ -112,7 +116,8 @@ import { firestore } from 'firebase';
     
       },
       addProduct() {
-        this.$firestore.products.add(this.product)
+        this.$firestore.products.add(this.product);
+         $('#product').modal('hide');
       },
      
     },
