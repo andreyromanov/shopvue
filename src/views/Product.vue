@@ -51,8 +51,7 @@
               <input type="text" class="form-control" placeholder="Product price..." v-model="product.price">
             </div>
             <div class="form-group">
-              <textarea class="form-control" name="" id="" cols="30" rows="10" v-model="product.description"
-                placeholder="Product description..."></textarea>
+               <vue-editor v-model="product.description"></vue-editor>
             </div>
             <div class="form-group">
               <input type="text" class="form-control" placeholder="Product tags..." v-model="product.tag">
@@ -79,6 +78,7 @@
 </template>
 
 <script>
+import { VueEditor } from "vue2-editor";
   import {
     fb,
     db
@@ -90,6 +90,9 @@
     name: "Product",
     props: {
       msg: String
+    },
+    components: {
+      VueEditor
     },
 
     data() {
