@@ -7,6 +7,11 @@ window.$ = window.jQuery = jQuery;
 import 'popper.js';
 import './assets/app.scss'
 
+Vue.use(VueFirestore, {
+  key: 'id',
+  enumerable: true
+});
+
 import Swal from 'sweetalert2'
 window.Swal = Swal;
 

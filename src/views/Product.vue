@@ -22,7 +22,7 @@
               {{product.price}}
             </td>
             <td>
-              <button class="btn btn-primary">Update</button>
+              <button class="btn btn-primary" @click="editProduct(product)">Update</button>
               <button class="btn btn-danger ml-3" @click="deleteProduct(product)">Delete</button>
             </td>
           </tr>
@@ -36,7 +36,8 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Edit Product</h5>
+            <h5 class="modal-title" id="exampleModalLabel" v-if="modal=='new'">Add Product</h5>
+            <h5 class="modal-title" id="exampleModalLabel" v-if="modal=='edit'">Edit Product</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -63,7 +64,10 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button @click="addProduct()" type="button" class="btn btn-primary">Save changes</button>
+            <button @click="addProduct()" type="button" class="btn btn-primary" v-if="modal=='new'">Add product</button>
+            <button @click="updateProduct()" type="button" class="btn btn-primary" v-if="modal=='edit'">Update
+              product</button>
+
           </div>
         </div>
       </div>
@@ -98,8 +102,8 @@
           tag: null,
           image: null
         },
-        activeItem: null
-
+        activeItem: null,
+        modal: null
       }
     },
 
@@ -110,14 +114,23 @@
     },
     methods: {
       AddNew() {
+        this.modal = 'new';
         $('#product').modal('show');
       },
 
       updateProduct() {
-
+        this.$firestore.products.doc(this.product.id).update(this.product);
+         $('#product').modal('hide');
+        Toast.fire({
+              type: 'success',
+              title: 'Updated successfully'
+            })
       },
       editProduct(product) {
-
+        this.modal = 'edit';
+        this.product = product;
+        this.activeItem = product['.key'];
+        $('#product').modal('show');
       },
       deleteProduct(doc) {
         Swal.fire({
@@ -144,6 +157,10 @@
       addProduct() {
         this.$firestore.products.add(this.product);
         $('#product').modal('hide');
+        Toast.fire({
+              type: 'success',
+              title: 'Added successfully'
+            })
       },
 
     },
