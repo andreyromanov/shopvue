@@ -18,6 +18,13 @@
             <td>
               {{product.name}}
             </td>
+            <td>
+              {{product.price}}
+            </td>
+            <td>
+              <button class="btn btn-primary">Update</button>
+              <button class="btn btn-danger ml-3" @click="deleteProduct(product)">Delete</button>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -43,12 +50,13 @@
               <input type="text" class="form-control" placeholder="Product price..." v-model="product.price">
             </div>
             <div class="form-group">
-              <textarea class="form-control" name="" id="" cols="30" rows="10" v-model="product.description" placeholder="Product description..."></textarea>
+              <textarea class="form-control" name="" id="" cols="30" rows="10" v-model="product.description"
+                placeholder="Product description..."></textarea>
             </div>
-             <div class="form-group">
+            <div class="form-group">
               <input type="text" class="form-control" placeholder="Product tags..." v-model="product.tag">
             </div>
-             <div class="form-group">
+            <div class="form-group">
               <input type="file" class="form-control" placeholder="Product images...">
             </div>
 
@@ -71,7 +79,9 @@
     fb,
     db
   } from '../firebase';
-import { firestore } from 'firebase';
+  import {
+    firestore
+  } from 'firebase';
   export default {
     name: "Product",
     props: {
@@ -93,8 +103,8 @@ import { firestore } from 'firebase';
       }
     },
 
-    firestore(){
-      return{
+    firestore() {
+      return {
         products: db.collection('products'),
       }
     },
@@ -104,25 +114,41 @@ import { firestore } from 'firebase';
       },
 
       updateProduct() {
-  
+
       },
       editProduct(product) {
-  
+
       },
       deleteProduct(doc) {
-  
+        Swal.fire({
+          title: 'Are you sure?',
+          text: "You won't be able to revert this!",
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+          if (result.value) {
+            this.$firestore.products.doc(doc['.key']).delete();
+            Toast.fire({
+              type: 'success',
+              title: 'Signed in successfully'
+            })
+          }
+        })
       },
       readData() {
-    
+
       },
       addProduct() {
         this.$firestore.products.add(this.product);
-         $('#product').modal('hide');
+        $('#product').modal('hide');
       },
-     
+
     },
     created() {
-   
+
     }
   };
 </script>
