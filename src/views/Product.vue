@@ -54,7 +54,7 @@
                <vue-editor v-model="product.description"></vue-editor>
             </div>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="Product tags..." v-model="product.tag">
+              <input type="text" @keyup.188="addTag" class="form-control" placeholder="Product tags..." v-model="tag">
             </div>
             <div class="form-group">
               <input type="file" class="form-control" placeholder="Product images...">
@@ -102,11 +102,12 @@ import { VueEditor } from "vue2-editor";
           name: null,
           description: null,
           price: null,
-          tag: null,
+          tags: [],
           image: null
         },
         activeItem: null,
-        modal: null
+        modal: null,
+        tag: null
       }
     },
 
@@ -116,6 +117,10 @@ import { VueEditor } from "vue2-editor";
       }
     },
     methods: {
+      addTag(){
+        this.product.tags.push(this.tag);
+        this.tag = "";
+      },
       AddNew() {
         this.modal = 'new';
         $('#product').modal('show');
