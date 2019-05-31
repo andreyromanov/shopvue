@@ -14,7 +14,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="product in products" v-bind:key="product">
+          <tr v-for="product in products">
             <td>
               {{product.name}}
             </td>
@@ -57,7 +57,7 @@
               <input type="text" @keyup.188="addTag" class="form-control" placeholder="Product tags..." v-model="tag">
             </div>
             <div class="form-group">
-              <input type="file" class="form-control" placeholder="Product images...">
+              <input type="file" @change="uploadImage" class="form-control" placeholder="Product images...">
             </div>
 
           </div>
@@ -117,6 +117,24 @@ import { VueEditor } from "vue2-editor";
       }
     },
     methods: {
+      uploadImage(e){
+       let file = e.target.files[0];
+       var storageRef = fb.storage().ref('products/' + file.name);
+       let uploadTask = storageRef.put(file);
+       
+                 uploadTask.on('state_changed', (snapshot) => {
+            
+          }, (error) => {
+            
+          }, () => {
+            
+            uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+             // this.product.images.push(downloadURL);
+             this.product.image = downloadURL;
+             console.log(downloadURL);
+            });
+          });
+      },
       addTag(){
         this.product.tags.push(this.tag);
         this.tag = "";
