@@ -131,35 +131,44 @@
       }
     },
     methods: {
+      reset() {
+        this.product = {
+          name: null,
+          description: null,
+          price: null,
+          tags: [],
+          images: []
+        };
+      },
 
-    deleteImage(img,index){
-      let image = fb.storage().refFromURL(img);
-      this.product.images.splice(index,1);
-      image.delete().then(function() {
-        console.log('image deleted');
-      }).catch(function(error) {
-        // Uh-oh, an error occurred!
-        console.log('an error occurred');
-      });
-    },
-      uploadImage(e) {
-        if(e.target.files[0]){
-        let file = e.target.files[0];
-        var storageRef = fb.storage().ref('products/' + file.name);
-        let uploadTask = storageRef.put(file);
-
-        uploadTask.on('state_changed', (snapshot) => {
-
-        }, (error) => {
-
-        }, () => {
-
-          uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
-            // this.product.images.push(downloadURL);
-            this.product.images.push(downloadURL);
-            console.log(downloadURL);
-          });
+      deleteImage(img, index) {
+        let image = fb.storage().refFromURL(img);
+        this.product.images.splice(index, 1);
+        image.delete().then(function () {
+          console.log('image deleted');
+        }).catch(function (error) {
+          // Uh-oh, an error occurred!
+          console.log('an error occurred');
         });
+      },
+      uploadImage(e) {
+        if (e.target.files[0]) {
+          let file = e.target.files[0];
+          var storageRef = fb.storage().ref('products/' + file.name);
+          let uploadTask = storageRef.put(file);
+
+          uploadTask.on('state_changed', (snapshot) => {
+
+          }, (error) => {
+
+          }, () => {
+
+            uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+              // this.product.images.push(downloadURL);
+              this.product.images.push(downloadURL);
+              console.log(downloadURL);
+            });
+          });
         }
 
       },
@@ -169,6 +178,7 @@
       },
       AddNew() {
         this.modal = 'new';
+        this.reset();
         $('#product').modal('show');
       },
 
