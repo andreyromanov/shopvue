@@ -64,6 +64,13 @@
 
                             </li>
                             <li>
+                                <router-link to="/admin/profile">
+                                    <i class="far fa-user"></i>
+                                    <span class="menu-text">Profile</span>
+                                </router-link>
+
+                            </li>
+                            <li>
                                 <a href="#" @click="logout()">
                                     <i class="fas fa-sign-out-alt"></i>
                                     <span class="menu-text">Logout</span>
