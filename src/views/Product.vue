@@ -51,13 +51,25 @@
               <input type="text" class="form-control" placeholder="Product price..." v-model="product.price">
             </div>
             <div class="form-group">
-               <vue-editor v-model="product.description"></vue-editor>
+              <vue-editor v-model="product.description"></vue-editor>
             </div>
             <div class="form-group">
               <input type="text" @keyup.188="addTag" class="form-control" placeholder="Product tags..." v-model="tag">
+              <div class="d-flex">
+                <p v-for="tag in product.tags">
+                  <span class="p-1">{{tag}}</span>
+                </p>
+              </div>
             </div>
+
             <div class="form-group">
               <input type="file" @change="uploadImage" class="form-control" placeholder="Product images...">
+            </div>
+            <div class="form-group d-flex p-2">
+              <div v-for="image in product.images">
+                <img :src="image" alt="" width="80px;">
+                <span @click="deleteImage(image,index)">X</span>
+              </div>
             </div>
 
           </div>
@@ -78,7 +90,9 @@
 </template>
 
 <script>
-import { VueEditor } from "vue2-editor";
+  import {
+    VueEditor
+  } from "vue2-editor";
   import {
     fb,
     db
@@ -103,7 +117,7 @@ import { VueEditor } from "vue2-editor";
           description: null,
           price: null,
           tags: [],
-          image: null
+          images: []
         },
         activeItem: null,
         modal: null,
@@ -117,25 +131,39 @@ import { VueEditor } from "vue2-editor";
       }
     },
     methods: {
-      uploadImage(e){
-       let file = e.target.files[0];
-       var storageRef = fb.storage().ref('products/' + file.name);
-       let uploadTask = storageRef.put(file);
-       
-                 uploadTask.on('state_changed', (snapshot) => {
-            
-          }, (error) => {
-            
-          }, () => {
-            
-            uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
-             // this.product.images.push(downloadURL);
-             this.product.image = downloadURL;
-             console.log(downloadURL);
-            });
+
+    deleteImage(img,index){
+      let image = fb.storage().refFromURL(img);
+      this.product.images.splice(index,1);
+      image.delete().then(function() {
+        console.log('image deleted');
+      }).catch(function(error) {
+        // Uh-oh, an error occurred!
+        console.log('an error occurred');
+      });
+    },
+      uploadImage(e) {
+        if(e.target.files[0]){
+        let file = e.target.files[0];
+        var storageRef = fb.storage().ref('products/' + file.name);
+        let uploadTask = storageRef.put(file);
+
+        uploadTask.on('state_changed', (snapshot) => {
+
+        }, (error) => {
+
+        }, () => {
+
+          uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+            // this.product.images.push(downloadURL);
+            this.product.images.push(downloadURL);
+            console.log(downloadURL);
           });
+        });
+        }
+
       },
-      addTag(){
+      addTag() {
         this.product.tags.push(this.tag);
         this.tag = "";
       },
@@ -146,11 +174,11 @@ import { VueEditor } from "vue2-editor";
 
       updateProduct() {
         this.$firestore.products.doc(this.product.id).update(this.product);
-         $('#product').modal('hide');
+        $('#product').modal('hide');
         Toast.fire({
-              type: 'success',
-              title: 'Updated successfully'
-            })
+          type: 'success',
+          title: 'Updated successfully'
+        })
       },
       editProduct(product) {
         this.modal = 'edit';
@@ -184,9 +212,9 @@ import { VueEditor } from "vue2-editor";
         this.$firestore.products.add(this.product);
         $('#product').modal('hide');
         Toast.fire({
-              type: 'success',
-              title: 'Added successfully'
-            })
+          type: 'success',
+          title: 'Added successfully'
+        })
       },
 
     },
