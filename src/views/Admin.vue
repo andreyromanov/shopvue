@@ -16,7 +16,7 @@
                             <span class="user-name">Andrii
                                 <strong>Romanov</strong>
                             </span>
-                            <span class="user-role">Director</span>
+                            <span class="user-role">{{email}}</span>
                             <span class="user-status">
                                 <i class="fa fa-circle"></i>
                                 <span>Online</span>
@@ -100,6 +100,13 @@
 
     export default {
         name: "admin",
+        data(){
+            return{
+                name: null,
+                email:null,
+
+            } 
+        },
         components: {
             HelloWorld
         },
@@ -113,6 +120,11 @@
                     console.log(err);
                 })
             }
+        },
+        created(){
+            var user = fb.auth().currentUser;
+            this.email = user.email;
+
         }
     };
 </script>
