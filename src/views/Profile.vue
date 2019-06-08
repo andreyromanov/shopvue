@@ -21,7 +21,7 @@
               <div class="row">
                 <div class="col-md-6">
                   <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Full name">
+                    <input v-model="profile.name" type="text" class="form-control" placeholder="Full name">
                   </div>
                 </div>
                 <div class="col-md-6">
@@ -40,7 +40,7 @@
                   </div>
                 </div>
                 <div class="col-md-4">
-                  <button type="submit" class="btn btn-primary form-control">Submit</button>
+                  <button type="submit" @click="updateProfile" class="btn btn-primary form-control">Submit</button>
                 </div>
               </div>
             </div>
@@ -91,10 +91,43 @@
 </template>
 
 <script>
+import {
+    VueEditor
+  } from "vue2-editor";
+  import {
+    fb,
+    db
+  } from '../firebase';
+  import {
+    firestore
+  } from 'firebase';
   export default {
     name: "Order",
     props: {
       msg: String
+    },
+    data(){
+      return{
+        profile:{
+          name: null,
+
+        },
+        account:{
+          name: null,
+
+        }
+      }
+    },
+    firestore() {
+      const user = fb.auth().currentUser;
+      return {
+        profile: db.collection('profiles').doc(user.uid),
+      }
+    },
+    methods:{
+      updateProfile(){
+        this.$firestore.profile.update(this.profile);
+      }
     }
   };
 </script>

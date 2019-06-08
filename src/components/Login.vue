@@ -83,7 +83,7 @@
 
 <script>
     import {
-        fb
+        fb,db
     } from '../firebase';
 
     export default {
@@ -120,7 +120,17 @@
             register() {
                 fb.auth().createUserAndRetrieveDataWithEmailAndPassword(this.email, this.password)
                     .then((user) => {
-                        
+                         // Add a new document in collection "cities"
+                        db.collection("profiles").doc(user.user.uid).set({
+                                name: this.name,
+                                
+                            })
+                            .then(function () {
+                                console.log("Document successfully written!");
+                            })
+                            .catch(function (error) {
+                                console.error("Error writing document: ", error);
+                            });
                         this.$router.replace('admin');
                     })
                     .catch(function (error) {
