@@ -13,7 +13,7 @@
                             <img class="img-responsive img-rounded" src="@/assets/logo.png" alt="User picture">
                         </div>
                         <div class="user-info">
-                            <span class="user-name">Andrii
+                            <span class="user-name">{{email}}
                                 <strong>Romanov</strong>
                             </span>
                             <span class="user-role">{{email}}</span>
@@ -124,6 +124,7 @@
         created(){
             var user = fb.auth().currentUser;
             this.email = user.email;
+            this.name = user.name;
 
         }
     };

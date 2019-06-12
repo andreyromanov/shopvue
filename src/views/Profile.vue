@@ -13,7 +13,7 @@
             </li>
             <li class="nav-item">
               <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab"
-                aria-controls="pills-profile" aria-selected="false">Profile</a>
+                aria-controls="pills-profile" aria-selected="false">Account</a>
             </li>
           </ul>
           <div class="tab-content" id="pills-tabContent">
@@ -71,13 +71,16 @@
                 </div>
               </div>
               <div class="row">
-                <div class="col-md-8">
+                <div class="col-md-4">
                   <div class="form-group">
                     <input type="file" class="form-control">
                   </div>
                 </div>
                 <div class="col-md-4">
                   <button type="submit" class="btn btn-primary form-control">Submit</button>
+                </div>
+                <div class="col-md-4">
+                  <button @click="resetPassword()" type="button" class="btn btn-success form-control">Reset password</button>
                 </div>
               </div>
             </div>
@@ -131,6 +134,18 @@
       }
     },
     methods: {
+      resetPassword(){
+        const auth = fb.auth();
+        
+        auth.sendPasswordResetEmail(auth.currentUser.email).then(()=>{
+          Toast.fire({
+          type: 'success',
+          title: 'Email sent!'
+        });
+        }).catch(()=>{
+          console.log('errrror');
+        });
+      },
       updateProfile() {
         this.$firestore.profile.update(this.profile);
         Toast.fire({
