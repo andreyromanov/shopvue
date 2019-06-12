@@ -26,21 +26,22 @@
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
-                    <input type="email" class="form-control" placeholder="Phone">
+                    <input v-model="profile.phone" type="text" class="form-control" placeholder="Phone">
                   </div>
                 </div>
               </div>
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="Adress">
+                <input v-model="profile.address" type="text" class="form-control" placeholder="Adress">
               </div>
               <div class="row">
                 <div class="col-md-8">
                   <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Postcode">
+                    <input v-model="profile.postcode" type="text" class="form-control" placeholder="Postcode">
                   </div>
                 </div>
                 <div class="col-md-4">
-                  <button type="submit" @click="updateProfile" class="btn btn-primary form-control">Submit</button>
+                  <button type="submit" @click="updateProfile" class="btn btn-primary form-control">Save
+                    Changes</button>
                 </div>
               </div>
             </div>
@@ -91,30 +92,35 @@
 </template>
 
 <script>
-import {
+  import {
     VueEditor
   } from "vue2-editor";
   import {
     fb,
     db
   } from '../firebase';
-  import {
-    firestore
-  } from 'firebase';
+
   export default {
-    name: "Order",
+    name: "profile",
     props: {
       msg: String
     },
-    data(){
-      return{
-        profile:{
+    data() {
+      return {
+        profile: {
           name: null,
-
+          phone: null,
+          address: null,
+          postcode: null
         },
-        account:{
+        account: {
           name: null,
-
+          email: null,
+          photoUrl: null,
+          emailVerified: null,
+          password: null,
+          confirmPassword: null,
+          uid: null
         }
       }
     },
@@ -124,10 +130,16 @@ import {
         profile: db.collection('profiles').doc(user.uid),
       }
     },
-    methods:{
-      updateProfile(){
+    methods: {
+      updateProfile() {
         this.$firestore.profile.update(this.profile);
-      }
+        Toast.fire({
+          type: 'success',
+          title: 'Updated successfully'
+        });
+        console.log('Updated');
+
+      },
     }
   };
 </script>
