@@ -7,6 +7,11 @@ window.$ = window.jQuery = jQuery;
 import 'popper.js';
 import './assets/app.scss'
 
+import VueCarousel from 'vue-carousel';
+Vue.use(VueCarousel);
+import Vue2Filters from 'vue2-filters'
+Vue.use(Vue2Filters)
+
 Vue.use(VueFirestore, {
   key: 'id',
   enumerable: true
@@ -32,6 +37,7 @@ Vue.use(VueFirestore);
 Vue.config.productionTip = false;
 
 Vue.component('Navbar', require('./components/Navbar.vue').default);
+Vue.component('products-list', require('./sections/ProductList.vue').default);
 
 let app = '';
 
