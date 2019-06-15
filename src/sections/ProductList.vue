@@ -8,7 +8,7 @@
                     <div class="card product-item">
 
                         <carousel :perPage="1">
-                            <slide v-for="(image, index) in product.images">
+                            <slide v-for="(image, index) in product.images" v-bind:key="product.id">
                                 <img :src="image" class="card-img-top" alt="..." width="250px">
                             </slide>
                         </carousel>
@@ -17,9 +17,14 @@
                             <div class="d-flex justify-content-between">
                                 <h5 class="card-title">{{ product.name }}</h5>
                                 <h5 class="card-priceS">{{ product.price | currency }}</h5>
-
                             </div>
+                            <add-to-cart 
+                            :product-image="getImage(product.images)"
+                            :product-id="product.id"
+                            :price="product.price"
+                            :name="product.name">
 
+                            </add-to-cart>
                         </div>
                     </div>
                 </div>

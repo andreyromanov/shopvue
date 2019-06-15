@@ -11,6 +11,10 @@ import VueCarousel from 'vue-carousel';
 Vue.use(VueCarousel);
 import Vue2Filters from 'vue2-filters'
 Vue.use(Vue2Filters)
+import Vuex from 'vuex'
+Vue.use(Vuex)
+
+import store from './store.js';
 
 Vue.use(VueFirestore, {
   key: 'id',
@@ -37,7 +41,10 @@ Vue.use(VueFirestore);
 Vue.config.productionTip = false;
 
 Vue.component('Navbar', require('./components/Navbar.vue').default);
+Vue.component('add-to-cart', require('./components/AddToCart.vue').default);
+
 Vue.component('products-list', require('./sections/ProductList.vue').default);
+
 
 let app = '';
 
@@ -46,6 +53,7 @@ fb.auth().onAuthStateChanged(function(user){
   if(!app){
     new Vue({
       router,
+      store,
       render: h => h(App)
     }).$mount("#app");
    }
