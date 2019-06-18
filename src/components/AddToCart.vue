@@ -12,7 +12,7 @@
     props: {
       name: String,
       price: String,
-      productID: String
+      pId: String
     },
 
     data() {
@@ -20,7 +20,8 @@
         item: {
           productName: this.name,
           productPrice: this.price,
-          product_id: this.id
+          productId: this.pId,
+          productQuantity: 1
         }
       }
     },
