@@ -5,7 +5,7 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">CArt</h5>
+        <h5 class="modal-title" id="exampleModalLongTitle">Product cart</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -13,13 +13,14 @@
       <div class="modal-body">
         <ul>
           <li v-for="item in this.$store.state.cart">
-            {{item.productName}} - {{item.productQuantity}}<br>
+            <img :src="item.productImage" alt="..." width="250px">
+           {{item.productName}} - {{item.productQuantity}}
           </li>
         </ul>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Continue</button>
-        <button type="button" class="btn btn-primary">Checkout</button>
+        <button type="button" class="btn btn-primary" @click="checkout()">Checkout</button>
       </div>
     </div>
   </div>
@@ -29,10 +30,17 @@
 </template>
 
 <script>
+import CheckoutVue from '../views/Checkout.vue';
 export default {
   name: "MiniCart",
   props: {
     msg: String
+  },
+  methods:{
+    checkout(){
+      $('#miniCart').modal('hide');
+      this.$router.push('/checkout');
+    }
   }
 };
 </script>

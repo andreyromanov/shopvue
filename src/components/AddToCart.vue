@@ -12,12 +12,14 @@
     props: {
       name: String,
       price: String,
-      pId: String
+      pId: String,
+      image: String
     },
 
     data() {
       return {
         item: {
+          productImage: this.image,
           productName: this.name,
           productPrice: this.price,
           productId: this.pId,
