@@ -23,9 +23,9 @@
         </ul>
         <form class="form-inline my-2 my-lg-0">
           <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-          <a class="btn btn-outline-success my-2 my-sm-0" type="submit" data-toggle="modal" data-target="#login">Get
+          <a class="btn btn-outline-success my-2 my-sm-0 mr-3" type="submit" data-toggle="modal" data-target="#login">Get
             Started</a>
-          <a class="btn btn-outline-info my-2 my-sm-0" type="submit" data-toggle="modal" data-target="#miniCart">Cart
+          <a class="btn btn-outline-info my-2 my-sm-0" type="submit" data-toggle="modal" data-target="#miniCart"><i class="fas fa-shopping-cart"></i>
           </a>
         </form>
       </div>

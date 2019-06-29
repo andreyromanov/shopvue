@@ -1,15 +1,19 @@
 <template>
   <div class="checkout">
     <Navbar></Navbar>
-    <h1>This is an checkout page</h1>
-    <ul>
-      <li v-for="item in this.$store.state.cart">
-        <img :src="item.productImage" alt="..." width="250px">
-        {{item.productName}} - {{item.productQuantity}}
-        <span class="float-right" @click="$store.commit('removeFromCart', item)">X</span>
-
-      </li>
-    </ul>
+    <h1 class="mb-5">This is an checkout page</h1>
+    <div class="container">
+    <div class="row" v-for="item in this.$store.state.cart">
+      <div class="col-md-3"></div>
+      <div class="col-md-2 border"><img :src="item.productImage" alt="..." width="150px"></div>
+      <div class="col-md-2 border pt-4">{{item.productName}} - {{item.productQuantity}}</div>
+      <div class="col-md-2 border pt-4 text-center"><span @click="$store.commit('removeFromCart', item)">
+          <i class="fa fa-trash fa-2x" style="color: red;" aria-hidden="true"></i>
+        </span>
+      </div>
+      <div class="col-md-3"></div>
+    </div>
+    </div>
   </div>
 </template>
 
