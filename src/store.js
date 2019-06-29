@@ -9,6 +9,12 @@ export default new Vuex.Store({
       cart: cart ? JSON.parse(cart) : [],
     },
     mutations:{
+      removeFromCart(state, item){
+        let index = state.cart.indexOf(item);
+        state.cart.splice(index, 1);
+        this.commit('saveData');
+      },
+
       addToCart(state, item){
 
         let found = state.cart.find(product => product.productId == item.productId);
